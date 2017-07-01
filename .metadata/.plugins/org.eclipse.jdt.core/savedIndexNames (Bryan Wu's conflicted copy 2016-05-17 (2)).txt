@@ -1,0 +1,2 @@
+INDEX VERSION 1.127+C:\Users\bwu623\Dropbox\APCS Project\.metadata\.plugins\org.eclipse.jdt.core
+841433994.index

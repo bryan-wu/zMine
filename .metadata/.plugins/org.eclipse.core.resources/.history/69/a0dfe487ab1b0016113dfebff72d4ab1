@@ -1,0 +1,443 @@
+package testMine;
+
+import java.awt.Color;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Random;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.Timer;
+
+
+public class World
+{
+    int xDim;// xlenght of the world
+
+    int yDim;// ylenght of the world
+
+    public Tile[][] theWorld;// store all our blocks
+
+    ArrayList<Player> thePlayers = new ArrayList<Player>();// store all our
+                                                           // players
+
+    ArrayList<Enemy> theEnemies = new ArrayList<Enemy>();// store all our
+                                                         // enemies
+
+    Timer worldTimer; // our world time, its our animation!
+
+    Displayer dis;
+    
+    Image i;
+
+    Listener lis;
+
+    static Color brown = new Color( 92, 56, 20 );
+
+    Timer bombTimer;
+    /**
+     * @param x
+     *            is the width of the world
+     * @param y
+     *            is the height of the world
+     * @param players
+     *            number of
+     */
+    public World( int x, int y, int playersx, Listener lis )
+    {
+        xDim = x;
+        yDim = y;
+        theWorld = makeWorld( xDim, yDim );
+        for ( int i = 0; i < playersx; i++ )
+        {
+            thePlayers.add( new Player( xDim / 2, yDim / 2, -192834, 45181, 10, Color.PINK, this ) );
+            try
+            {
+                thePlayers.get(i).setImage(ImageIO.read(new File("Smug.jpg")));
+            }
+            catch ( IOException e )
+            {
+                e.printStackTrace();
+            }
+            System.out.println( thePlayers.get( 0 ).getX() );
+        }
+        runWorld();
+        lis.addWorld( this );
+        try
+        {
+            i = ImageIO.read(new File("Bomb10x10.jpg"));
+        }
+        catch ( IOException e )
+        {
+            e.printStackTrace();
+        }
+        
+    }
+
+
+    /**
+     * creates a world, filling our array with blocks
+     * 
+     * @param x
+     *            the width
+     * @param y
+     *            the height
+     * @return a newly random generated world to loot!
+     */
+    public Tile[][] makeWorld( int x, int y )
+    {
+        Random rand = new Random();
+        this.theWorld = new Tile[xDim][yDim];
+        for ( int r = 0; r < xDim; r++ )
+        {
+            for ( int c = 0; c < yDim; c++ )
+            {
+                if ( rand.nextInt( 21 ) == 0 )
+                {
+                    theWorld[r][c] = new GoldTile( r, c, this );
+                    try
+                    {
+                        theWorld[r][c].setImage(ImageIO.read(new File("goldtile2.jpg")));
+                    }
+                    catch ( IOException e )
+                    {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
+                else if ( rand.nextInt( 11 ) == 0 )
+                {
+                    theWorld[r][c] = new SilverTile( r, c, this );
+                    try
+                    {
+                        theWorld[r][c].setImage(ImageIO.read(new File("silvertile.jpg")));
+                    }
+                    catch ( IOException e )
+                    {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
+                else
+                {
+                    theWorld[r][c] = new RegularTile( false, 0, Color.BLACK, r, c, this );
+                    // "1"
+                    // blocks
+                    // will
+                    // be
+                    // regular
+                    // blocks,
+                    // with
+                    // no
+                    // gold inside
+                }
+            }
+        }
+        // now we should have a world with all regular blocks. lets create some
+        // passages!
+        for ( int r = 0; r < xDim; r++ )
+        {
+            if ( rand.nextInt( 11 ) == 0 )
+            {
+                for ( int c = 0; c < yDim; c++ )
+                {
+                    theWorld[r][c] = new RegularTile( true, 0, brown, r, c, this );// "0"
+                    // blocks
+                    // will
+                    // be
+                    // empty
+                    // blocks,
+                    // players and enemies can freely move
+                    // through
+                }
+            }
+        }
+        // whole col should be empty 1/5 of the time
+        for ( int c = 0; c < yDim; c++ )
+        {
+            if ( rand.nextInt( 11 ) == 0 )
+            {
+                for ( int r = 0; r < xDim; r++ )
+                {
+                    theWorld[r][c] = new RegularTile( true, 0, brown, r, c, this );// "0"
+                    // blocks
+                    // will
+                    // be
+                    // empty
+                    // blocks,
+                    // players and enemies can freely move
+                    // through
+                }
+            }
+        }
+        // whole row should be empty 1/5 of the time
+
+        for ( int r = 0; r < xDim; r++ )
+        {
+            for ( int c = 0; c < yDim; c++ )
+            {
+                if ( rand.nextInt( 50 ) == 0 )
+                {
+                    int cavernRadius = rand.nextInt( 3 ) + 1;
+                    createCavern( r, c, cavernRadius );
+                }
+            }
+        }
+        // make diamond shaped caverns in the map
+
+        for ( int r = 0; r < xDim; r++ )
+        {
+            for ( int c = 0; c < yDim; c++ )
+            {
+                if ( rand.nextInt( 50 ) == 0 )
+                {
+                    createTrap( r, c );
+                }
+            }
+        }
+        // make traps
+        createEntrance();// this last because most important
+        return theWorld;
+    }
+
+
+    /**
+     * creates caverns, which are diamond shaped. Randomly generated sizes
+     * 
+     * @param r1
+     *            the
+     * @param c1
+     *            coordinates of the center
+     */
+    public void createCavern( int r1, int c1, int cavenRadius )
+    {
+        for ( int r = 0; r < xDim; r++ )
+        {
+            for ( int c = 0; c < yDim; c++ )
+            {
+                if ( distance( r1, r ) + distance( c1, c ) <= cavenRadius )
+                {
+                    theWorld[r][c] = new RegularTile( true, 0, brown, r, c, this );// "0"
+                    // blocks
+                    // will
+                    // be
+                    // empty
+                    // blocks,
+                    // players and enemies can freely move
+                    // through
+                }
+            }
+        }
+    }
+
+
+    /**
+     * 
+     * TODO Write your method description here.
+     * 
+     * @param r1
+     * @param c1
+     */
+    public void createTrap( int r, int c )
+    {
+        theWorld[r][c] = new TrapTile( true, 0, Color.RED, r, c, this );
+    }
+
+
+    /**
+     * Creates the entrance, and a + to move around
+     */
+    public void createEntrance()
+    {
+        for ( int r = 0; r < xDim; r++ )
+        {
+            theWorld[r][yDim / 2] = new RegularTile( true, 0, brown, r, yDim / 2, this );
+        }
+        for ( int c = 0; c < yDim; c++ )
+        {
+            theWorld[xDim / 2][c] = new RegularTile( true, 0, brown, xDim / 2, c, this );
+        }
+        theWorld[xDim / 2][yDim / 2] = new RegularTile( true, 0, Color.BLUE, xDim / 2, yDim / 2, this );
+    }
+
+
+    // public void createEnemy()
+    // {
+    // for ( int i = 0; i < 10; i++ )
+    // {
+    // Enemy enemy = new Enemy( 1, 1, 1, 1, 100,Color.green, this );
+    // theEnemies.add( enemy );
+    // }
+    // }
+
+    public boolean checkCollision( Player p, Enemy e )
+    {
+        return e.getX() == p.getX() && e.getY() == p.getY();
+    }
+
+
+    /**
+     * removes a enemy from the list.
+     * 
+     * @param enemy
+     *            that needs to be removed
+     */
+    public void enemyDeath( Enemy enemy )
+    {
+        theEnemies.remove( enemy );
+    }
+
+
+    /**
+     * removes a player from the list
+     * 
+     * @param player
+     *            that needs to be removed
+     */
+    public void playerDeath( Player player )
+    {
+        thePlayers.remove( player );
+    }
+
+
+    /**
+     * the distance between 2 integers
+     * 
+     * @param x
+     *            point one
+     * @param y
+     *            point two
+     * @return the distance between the points
+     */
+    public int distance( int x, int y )
+    {
+        return Math.abs( x - y );
+    }
+
+
+    /**
+     * runs the world's timer to send to the other classes
+     */
+    public void runWorld()
+    {
+        int delay = 10;
+        worldTimer = new Timer( delay, new ActionListener()
+        {
+
+            @Override
+            public void actionPerformed( ActionEvent e )
+            {
+                tick( delay );
+                dis.repaint();
+                // Yo connor, put this in the tick below!
+                // for ( Player p : thePlayers )
+                // {
+                // for ( Enemy en : theEnemies )
+                // {
+                // if ( checkCollision( p, en ) )
+                // {
+                // en.enemyAttack( p );
+                // }
+                // }
+                // }
+            }
+
+        } );
+        worldTimer.start();
+    }
+
+
+    // /**
+    // * sends the animation to the other classes
+    // *
+    // * @param fraps
+    // * from the runWorld
+    // */
+    public void tick( int fraps )
+    {
+        // for (Player p : thePlayers)
+        // {
+        // p.tick( fraps );
+        // }
+        for ( int r = 0; r < xDim; r++ )
+        {
+            for ( int c = 0; c < yDim; c++ )
+            {
+                if ( theWorld[r][c] instanceof TrapTile )
+                {
+                    if ( 2 > distance( (int)thePlayers.get( 0 ).getX(), r )
+                        + distance( (int)thePlayers.get( 0 ).getY(), c ) )
+                    {
+                        theWorld[r][c] = new RegularTile( true, 0, brown, r, c, this );
+                        System.out.println( "ouch" );
+                        thePlayers.get( 0 ).setAlive( false );
+                        thePlayers.get( 0 ).setColor( Color.cyan );
+                        worldTimer.stop();
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+
+    public void bombArea( int x, int y)
+    {
+        int delay = 3000;
+        System.out.println( x + " " + y + " start ticking!" );
+        theWorld[x][y].setImage( i );
+        bombTimer = new Timer( delay, new ActionListener()
+        {
+
+            @Override
+            public void actionPerformed( ActionEvent e )
+            {
+                clearArea( x, y, 2 );
+                System.out.println( x + " " + y + " BOOM!" );
+                thePlayers.get( 0 ).bombWait = false;
+                bombTimer.stop();
+                theWorld[x][y].setImage( null );
+            }
+
+        } );
+        bombTimer.start();
+    }
+    
+    public void clearArea( int r1, int c1, int cavenRadius )
+    {
+        for ( int r = 0; r < xDim; r++ )
+        {
+            for ( int c = 0; c < yDim; c++ )
+            {
+                if ( distance( r1, r ) + distance( c1, c ) <= cavenRadius )
+                {
+                    theWorld[r][c].destroyTile();// "0"
+                    // blocks
+                    // will
+                    // be
+                    // empty
+                    // blocks,
+                    // players and enemies can freely move
+                    // through
+                }
+            }
+        }
+    }
+
+    public boolean isTile()
+    {
+        return true;
+    }
+
+
+    public void setDisplayer( Displayer d )
+    {
+        dis = d;
+        worldTimer.start();
+    }
+
+}

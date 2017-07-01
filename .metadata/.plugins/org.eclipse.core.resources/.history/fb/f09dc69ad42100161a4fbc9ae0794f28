@@ -1,0 +1,25 @@
+package testMine;
+
+import java.awt.Color;
+
+public class EntranceTile extends Tile
+{
+
+    public EntranceTile(int x, int y, World world )
+    {
+        // TODO Auto-generated constructor stub
+        super( true, 0, Color.BLUE, x, y, world );
+    }
+    
+    @Override
+    public void destroyTile()
+    {
+        //cant destroy me hahaha!
+    }
+
+    public void exit()
+    {
+        //interact key!
+    }
+    
+}

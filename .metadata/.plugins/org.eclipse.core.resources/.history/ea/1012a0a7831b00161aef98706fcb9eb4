@@ -1,0 +1,71 @@
+package testMine;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.image.ImageObserver;
+
+
+public class Tile
+{
+    boolean pass;// tells if the player is able to walk through
+
+    boolean destroyed = false;// if the tile is already destroyed
+
+    int loot;// does it drop loot?
+
+    int x, y;
+
+    Image image;
+
+    Color color;// color of the tile.
+
+
+    public Tile( boolean passable, int loot, Color color, int x, int y )
+    {
+        pass = passable;
+        this.loot = loot;
+        this.color = color;
+        this.x = x;
+        this.y = y;
+    }
+
+
+    public void destroyTile()
+    {
+
+    }
+
+
+    public Tile getTile()
+    {
+
+        return this;
+    }
+
+
+    public Color getColor()
+    {
+        return color;
+    }
+
+
+    public void drawSelf( Graphics g )
+    {
+        if ( image == null )
+        {
+            g.setColor( color );
+            g.fillRect( x * 20, y * 20, 20, 20 );
+        }
+        else
+        {
+            g.drawImage( image, x * 20, y * 20, null );
+        }
+    }
+
+
+    public void setImage( Image i )
+    {
+        image = i;
+    }
+}

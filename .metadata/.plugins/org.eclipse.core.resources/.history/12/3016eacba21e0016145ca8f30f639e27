@@ -1,0 +1,164 @@
+
+import java.awt.Color;
+
+
+public class Enemy extends Character implements FirePattern
+{
+
+    private double x;// Note: x is column #
+
+    private double y;// y is row #
+
+    protected int hp; // health points
+
+    public World w;
+
+
+    private Color color;
+
+    int speed = 200;
+
+
+    /**
+     * @param x
+     *            x position
+     * @param y
+     *            y position
+     * @param vX
+     *            x velocity
+     * @param vY
+     *            y velocity
+     * @param hitPoints
+     *            hitPoints
+     * @param world
+     *            World
+     */
+    public Enemy( int c, int r, double velX, double velY, int hitPoints, Color c, World world )
+    {
+        super( c, r, velX, velY, hitPoints, c, world );
+        // this.x = x;
+        // this.y = y;
+
+        // hp = hitPoints;
+        // w = world;
+        // color = c;
+    }
+
+
+    /**
+     * Takes damage
+     * 
+     * @param damage
+     *            damage
+     * @return
+     */
+    @Override
+    public void takeDamage( int damage )
+    {
+        setHp( getHP() - damage );
+        if ( !isAlive() )
+        {
+            w.enemyDeath( this );
+        }
+    }
+
+
+    /**
+     * Checks if alive
+     * 
+     * @return
+     */
+    public boolean isAlive()
+    {
+        return hp > 0;
+    }
+
+
+    /**
+     * Moves enemy right
+     */
+    public void moveRight()
+    {
+        setC( (int)( getC() + getVC() ) );
+    }
+
+
+    /**
+     * Moves enemy left
+     */
+    public void moveLeft()
+    {
+        setC( (int)( getC() - getVC() ) );
+
+    }
+
+
+    /**
+     * Moves enemy up
+     */
+    public void moveUp()
+    {
+        setR( (int)( getR() + getVR() ) );
+    }
+
+
+    /**
+     * Moves enemy down
+     */
+    public void moveDown()
+    {
+        setR( (int)( getR() - getVR() ) );
+    }
+
+
+    /**
+     * Enemy attacks player
+     * 
+     * @param c
+     *            character
+     */
+    public void enemyAttack( Player c ) // maybe multiple attacks later
+    {
+        c.setHP( c.getHP() - 1 );
+    }
+
+
+    /**
+     * gets current health point
+     * 
+     * @return
+     */
+    public int getHp()
+    {
+        return hp;
+    }
+
+
+    /**
+     * sets current health point
+     * 
+     * @param hp
+     */
+    public void setHp( int hp )
+    {
+        this.hp = hp;
+    }
+
+
+    /**
+     * get color
+     */
+    public Color getColor()
+    {
+        return color;
+    }
+
+    // public boolean checkFront( Character player )
+    // {
+    // if(player = enemy )
+    // {
+    //
+    // }
+    // return false;
+    // }
+}

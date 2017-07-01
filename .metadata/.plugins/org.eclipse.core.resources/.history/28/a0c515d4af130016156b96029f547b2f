@@ -1,0 +1,218 @@
+package testMine;
+
+import java.awt.Color;
+
+
+public class Enemy extends Character implements FirePattern
+{
+
+    private double x;// Note: x is column #
+
+    private double y;// y is row #
+
+    private double vX; // x velocity
+
+    private double vY;// y velocity
+
+    protected int hp; // health points
+
+    public World w;
+
+    private boolean alive;
+
+    private Color color;
+
+    int speed = 200;
+
+
+    /**
+     * @param x
+     *            x position
+     * @param y
+     *            y position
+     * @param vX
+     *            x velocity
+     * @param vY
+     *            y velocity
+     * @param hitPoints
+     *            hitPoints
+     * @param world
+     *            World
+     */
+    public Enemy( double x, double y, double velX, double velY, int hitPoints, Color c, World world )
+    {
+        super( x, y, velX, velY, hitPoints, c, world );
+
+        vX = velX;
+        vY = velY;
+
+    }
+
+
+    /**
+     * Takes damage
+     * 
+     * @param damage
+     *            damage
+     * @return
+     */
+
+    public void takeDamage( int damage )
+    {
+        setHp( getHP() - damage );
+        if ( !isAlive() )
+        {
+            w.enemyDeath( this );
+        }
+    }
+
+
+    /**
+     * Checks if alive
+     * 
+     * @return
+     */
+    public boolean isAlive()
+    {
+        return hp > 0;
+    }
+
+
+    /**
+     * Moves enemy right
+     */
+    public void moveRight()
+    {
+        setX( getX() + getvX() );
+    }
+
+
+    /**
+     * Moves enemy left
+     */
+    public void moveLeft()
+    {
+        setX( getX() - getvX() );
+
+    }
+
+
+    /**
+     * Moves enemy up
+     */
+    public void moveUp()
+    {
+        setY( getY() + getvY() );
+    }
+
+
+    /**
+     * Moves enemy down
+     */
+    public void moveDown()
+    {
+        setY( getY() - getvY() );
+    }
+
+
+    /**
+     * Enemy attacks player
+     * 
+     * @param c
+     *            character
+     */
+    public void enemyAttack( Player c ) // maybe multiple attacks later
+    {
+        c.setHP( c.getHP() - 1 );
+    }
+
+
+    /**
+     * 
+     * get x movement
+     * 
+     * @return
+     */
+    public double getvX()
+    {
+        return vX;
+    }
+
+
+    /**
+     * set x movement
+     * 
+     * @param vX
+     *            vX
+     */
+    public void setvX( double vX )
+    {
+        this.vX = vX;
+    }
+
+
+    /**
+     * get y movement
+     * 
+     * @return
+     */
+    public double getvY()
+    {
+        return vY;
+    }
+
+
+    /**
+     * set y movement
+     * 
+     * @param vY
+     *            vy
+     */
+    public void setvY( double vY )
+    {
+        this.vY = vY;
+    }
+
+
+    /**
+     * gets current health point
+     * 
+     * @return
+     */
+    public int getHp()
+    {
+        return hp;
+    }
+
+
+    /**
+     * sets current health point
+     * 
+     * @param hp
+     *            hp
+     */
+    public void setHp( int hp )
+    {
+        this.hp = hp;
+    }
+
+
+    /**
+     * get color
+     * 
+     * @return
+     */
+    public Color getColor()
+    {
+        return color;
+    }
+
+    // public boolean checkFront( Character player )
+    // {
+    // if(player = enemy )
+    // {
+    //
+    // }
+    // return false;
+    // }
+}

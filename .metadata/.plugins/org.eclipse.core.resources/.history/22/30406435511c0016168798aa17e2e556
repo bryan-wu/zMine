@@ -1,0 +1,17 @@
+package testMine;
+
+import java.awt.Color;
+
+public class TrapTile extends Tile
+{
+
+    public TrapTile( boolean passable, int loot, Color color, int x, int y, World world )
+    {
+        super( passable, loot, color, x, y, world );
+    }
+    //make a method if anything is ajacent to tile, inflict damage
+    public void blow()
+    {
+        
+    }
+}

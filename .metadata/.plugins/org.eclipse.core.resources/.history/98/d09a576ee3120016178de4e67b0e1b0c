@@ -1,0 +1,30 @@
+package mine;
+
+import java.awt.BorderLayout;
+
+import javax.swing.JFrame;
+
+public class Main
+{
+    
+    public static void main(String[] args)
+    {
+        int width = 25;
+        int height = 25;
+        int players = 1;
+        World world = new World(width, height, players);
+        Displayer dis = new Displayer();
+        BorderLayout layout = new BorderLayout();
+        
+       dis.addWorld( world );
+       JFrame frame = new JFrame();
+       frame.setSize( width * 10 + 6, height * 10 + 35);
+       frame.setLayout( layout );
+       frame.add( dis, BorderLayout.CENTER );
+       
+       frame.setVisible( true );
+       frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+       frame.setResizable( false );
+       world.runWorld();
+    }
+}

@@ -1,0 +1,722 @@
+package testMine;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+import java.io.File;
+import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.Queue;
+import java.util.Set;
+import java.util.regex.*;
+
+import javax.imageio.ImageIO;
+
+import org.junit.*;
+
+import static org.junit.Assert.*;
+import junit.framework.JUnit4TestAdapter;
+
+
+/**
+ * zMine tests: Character, Displayer, Enemy, EntranceTile, GoldTile, Listener,
+ * Main, Player, RegularTile, SilverTile, Tile, TrapTile and World.
+ *
+ * @author Bryan Wu
+ * @version 5/25/2016
+ * @author Assignment: zMine
+ * 
+ * @author Sources: None
+ *
+ */
+public class JUSafeTradeTest
+{
+    // --Test Character
+
+    private int x = 1;
+
+    private int y = 1;
+
+    private int velX = 0;
+
+    int worldX = 50;
+
+    int worldY = 50;
+
+    int players = 1;
+
+    int enemies = 25;
+
+    // create a listener first
+    Listener lis = new Listener();
+
+    World world = new World( worldX, worldY, players, enemies, lis );
+
+
+    @Test
+    public void playerConstructor()
+    {
+        Player p = new Player( worldX / 2, worldY / 2, 0, 0, 10, Color.PINK, world );
+        String str = p.toString();
+        assertNotNull( str );
+    }
+
+
+    @Test
+    public void playerToString()
+    {
+        Player p = new Player( worldX / 2, worldY / 2, 0, 0, 10, Color.PINK, world );
+        String str = p.toString();
+        assertNotNull( str );
+        assertTrue( "<< Invalid Player Constructor >>",
+            str.contains( worldX / 2 + "" ) && str.contains( worldY / 2 + "" ) );
+    }
+
+
+    @Test
+    public void playerIsAlive()
+    {
+        Player p = new Player( worldX / 2, worldY / 2, 0, 0, 0, Color.PINK, world );
+        assertFalse( "<< Player should not be alive >>", p.isAlive() );
+    }
+
+
+    @Test
+    public void playerSetAlive()
+    {
+        Player p = new Player( worldX / 2, worldY / 2, 0, 0, 0, Color.PINK, world );
+        p.setAlive( true );
+        assertTrue( p.isAlive() );
+    }
+
+
+    @Test
+    public void playerUpdatePos()
+    {
+        Player p = new Player( worldX / 2, worldY / 2, 0, 0, 10, Color.PINK, world );
+        assertTrue( p.updatePos( 1, 1 ) );
+    }
+
+
+    @Test
+    public void playerGetHP()
+    {
+        Player p = new Player( worldX / 2, worldY / 2, 0, 0, 10, Color.PINK, world );
+        assertEquals( 10, p.getHP() );
+    }
+
+
+    @Test
+    public void playerSetHP()
+    {
+        Player p = new Player( worldX / 2, worldY / 2, 0, 0, 9, Color.PINK, world );
+        p.setHP( 10 );
+        assertEquals( 10, p.getHP() );
+    }
+
+
+    @Test
+    public void playerGetVX()
+    {
+        Player p = new Player( worldX / 2, worldY / 2, 0, 0, 9, Color.PINK, world );
+        assertEquals( 0, p.getVX() );
+    }
+
+
+    @Test
+    public void playerSetVX()
+    {
+        Player p = new Player( worldX / 2, worldY / 2, 0, 0, 9, Color.PINK, world );
+        p.setVX( 1 );
+        assertEquals( 1, p.getVX() );
+    }
+
+
+    @Test
+    public void playerGetVY()
+    {
+        Player p = new Player( worldX / 2, worldY / 2, 0, 0, 9, Color.PINK, world );
+        assertEquals( 0, p.getVY() );
+    }
+
+
+    @Test
+    public void playerSetVY()
+    {
+        Player p = new Player( worldX / 2, worldY / 2, 0, 0, 9, Color.PINK, world );
+        p.setVY( 1 );
+        assertEquals( 1, p.getVY() );
+    }
+
+
+    @Test
+    public void playerGetX()
+    {
+        Player p = new Player( worldX / 2, worldY / 2, 0, 0, 10, Color.PINK, world );
+        assertEquals( worldX / 2, p.getX() );
+    }
+
+
+    @Test
+    public void playerSetX()
+    {
+        Player p = new Player( worldX / 2, worldY / 2, 0, 0, 10, Color.PINK, world );
+        p.setX( 10 );
+        assertEquals( 10, p.getX() );
+    }
+
+
+    @Test
+    public void playerGetY()
+    {
+        Player p = new Player( worldX / 2, worldY / 2, 0, 0, 10, Color.PINK, world );
+        assertEquals( worldY / 2, p.getY() );
+    }
+
+
+    @Test
+    public void playerSetY()
+    {
+        Player p = new Player( worldX / 2, worldY / 2, 0, 0, 10, Color.PINK, world );
+        p.setY( 10 );
+        assertEquals( 10, p.getY() );
+    }
+
+
+    @Test
+    public void playerGetColor()
+    {
+        Player p = new Player( worldX / 2, worldY / 2, 0, 0, 10, Color.PINK, world );
+        assertEquals( Color.PINK, p.getColor() );
+    }
+
+
+    @Test
+    public void playerSetColor()
+    {
+        Player p = new Player( worldX / 2, worldY / 2, 0, 0, 10, Color.PINK, world );
+        p.setColor( Color.BLACK );
+        assertEquals( Color.BLACK, p.getColor() );
+    }
+
+
+    @Test
+    public void playerDrawMe()
+    {
+        Player p = new Player( worldX / 2, worldY / 2, 0, 0, 10, Color.PINK, world );
+        assertTrue( true );
+    }
+
+
+    @Test
+    public void playerSetImage()
+    {
+        Player p = new Player( worldX / 2, worldY / 2, 0, 0, 10, Color.PINK, world );
+        assertTrue( true );
+    }
+
+
+    @Test
+    public void playerGetWorld()
+    {
+        Player p = new Player( worldX / 2, worldY / 2, 0, 0, 10, Color.PINK, world );
+        assertEquals( world, p.getWorld() );
+    }
+
+
+    @Test
+    public void playerSetWorld()
+    {
+        Player p = new Player( worldX / 2, worldY / 2, 0, 0, 10, Color.PINK, world );
+        World lel = new World( worldX / 2, worldY, players, enemies, lis );
+        p.setWorld( lel );
+        assertEquals( lel, p.getWorld() );
+    }
+
+
+    @Test
+    public void playerTakeDamage()
+    {
+        Player p = new Player( worldX / 2, worldY / 2, 0, 0, 10, Color.PINK, world );
+        p.takeDamage( 1 );
+        assertEquals( 9, p.getHP() );
+    }
+
+
+    @Test
+    public void playerBomb()
+    {
+        Player p = new Player( worldX / 2, worldY / 2, 0, 0, 10, Color.PINK, world );
+        p.bomb();
+        assertTrue( true );
+    }
+
+
+    @Test
+    public void playerMine()
+    {
+        Player p = new Player( worldX / 2, worldY / 2, 0, 0, 10, Color.PINK, world );
+        p.mine();
+        assertTrue( true );
+    }
+
+
+    @Test
+    public void playerGetGold()
+    {
+        Player p = new Player( worldX / 2, worldY / 2, 0, 0, 10, Color.PINK, world );
+        assertEquals( 0, p.getGold() );
+    }
+
+
+    @Test
+    public void playerAddGold()
+    {
+        Player p = new Player( worldX / 2, worldY / 2, 0, 0, 10, Color.PINK, world );
+        p.addGold( 1 );
+        assertEquals( 1, p.getGold() );
+    }
+
+
+    @Test
+    public void playerSetBombWait()
+    {
+        Player p = new Player( worldX / 2, worldY / 2, 0, 0, 10, Color.PINK, world );
+        p.setBombWait( true );
+        assertTrue( true );
+    }
+
+
+    // --Test Displayer
+    @Test
+    public void displayerConstructor()
+    {
+        Displayer d = new Displayer();
+        assertTrue( true );
+    }
+
+
+    @Test
+    public void displayerAddWorld()
+    {
+        Displayer d = new Displayer();
+        d.addWorld( world );
+        assertTrue( true );
+    }
+
+
+    @Test
+    public void displayerPaintComponent()
+    {
+        Displayer d = new Displayer();
+        assertTrue( true );
+    }
+
+
+    @Test
+    public void displayerDrawTile()
+    {
+        Displayer d = new Displayer();
+        RegularTile r = new RegularTile( false, 0, Color.BLACK, x, y, world );
+        d.drawTile( r, x, y );
+        assertTrue( true );
+    }
+
+
+    @Test
+    public void displayerDistance()
+    {
+        Displayer d = new Displayer();
+        assertEquals( 3, d.distance( 5, 2 ) );
+    }
+
+
+    // --Test Enemy
+    @Test
+    public void enemyConstructor()
+    {
+        Enemy e = new Enemy( worldX / 2, worldY / 2, 0, 0, 10, Color.RED, world );
+        String str = e.toString();
+        assertNotNull( str );
+    }
+
+
+    @Test
+    public void enemyToString()
+    {
+        Enemy e = new Enemy( worldX / 2, worldY / 2, 0, 0, 10, Color.RED, world );
+        String str = e.toString();
+        assertNotNull( str );
+        assertTrue( "<< Invalid Player Constructor >>",
+            str.contains( worldX / 2 + "" ) && str.contains( worldY / 2 + "" ) );
+    }
+
+
+    @Test
+    public void enemyIsAlive()
+    {
+        Enemy e = new Enemy( worldX / 2, worldY / 2, 0, 0, 10, Color.RED, world );
+        assertFalse( "<< Enemy should not be alive >>", e.isAlive() );
+    }
+
+
+    @Test
+    public void enemySetAlive()
+    {
+        Enemy e = new Enemy( worldX / 2, worldY / 2, 0, 0, 10, Color.RED, world );
+        e.setAlive( true );
+        assertTrue( e.isAlive() );
+    }
+
+
+    @Test
+    public void enemyUpdatePos()
+    {
+        Enemy e = new Enemy( worldX / 2, worldY / 2, 0, 0, 10, Color.RED, world );
+        assertTrue( e.updatePos( 1, 1 ) );
+    }
+
+
+    @Test
+    public void enemyGetHP()
+    {
+        Enemy e = new Enemy( worldX / 2, worldY / 2, 0, 0, 10, Color.RED, world );
+        assertEquals( 10, e.getHP() );
+    }
+
+
+    @Test
+    public void enemySetHP()
+    {
+        Enemy e = new Enemy( worldX / 2, worldY / 2, 0, 0, 10, Color.RED, world );
+        e.setHP( 9 );
+        assertEquals( 9, e.getHP() );
+    }
+
+
+    @Test
+    public void enemyGetVX()
+    {
+        Enemy e = new Enemy( worldX / 2, worldY / 2, 0, 0, 10, Color.RED, world );
+        assertEquals( 0, e.getVX() );
+    }
+
+
+    @Test
+    public void enemySetVX()
+    {
+        Enemy e = new Enemy( worldX / 2, worldY / 2, 0, 0, 10, Color.RED, world );
+        e.setVX( 1 );
+        assertEquals( 1, e.getVX() );
+    }
+
+
+    @Test
+    public void enemyGetVY()
+    {
+        Enemy e = new Enemy( worldX / 2, worldY / 2, 0, 0, 10, Color.RED, world );
+        assertEquals( 0, e.getVY() );
+    }
+
+
+    @Test
+    public void enemySetVY()
+    {
+        Enemy e = new Enemy( worldX / 2, worldY / 2, 0, 0, 10, Color.RED, world );
+        e.setVY( 1 );
+        assertEquals( 1, e.getVY() );
+    }
+
+
+    @Test
+    public void enemyGetX()
+    {
+        Enemy e = new Enemy( worldX / 2, worldY / 2, 0, 0, 10, Color.RED, world );
+        assertEquals( worldX / 2, e.getX() );
+    }
+
+
+    @Test
+    public void enemySetX()
+    {
+        Enemy e = new Enemy( worldX / 2, worldY / 2, 0, 0, 10, Color.RED, world );
+        e.setX( 10 );
+        assertEquals( 10, e.getX() );
+    }
+
+
+    @Test
+    public void enemyGetY()
+    {
+        Enemy e = new Enemy( worldX / 2, worldY / 2, 0, 0, 10, Color.RED, world );
+        assertEquals( worldY / 2, e.getY() );
+    }
+
+
+    @Test
+    public void enemySetY()
+    {
+        Enemy e = new Enemy( worldX / 2, worldY / 2, 0, 0, 10, Color.RED, world );
+        e.setY( 10 );
+        assertEquals( 10, e.getY() );
+    }
+
+
+    @Test
+    public void enemyGetColor()
+    {
+        Enemy e = new Enemy( worldX / 2, worldY / 2, 0, 0, 10, Color.RED, world );
+        assertEquals( Color.RED, e.getColor() );
+    }
+
+
+    @Test
+    public void enemySetColor()
+    {
+        Enemy e = new Enemy( worldX / 2, worldY / 2, 0, 0, 10, Color.RED, world );
+        e.setColor( Color.BLACK );
+        assertEquals( Color.BLACK, e.getColor() );
+    }
+
+
+    @Test
+    public void enemyDrawMe()
+    {
+        Enemy e = new Enemy( worldX / 2, worldY / 2, 0, 0, 10, Color.RED, world );
+        assertTrue( true );
+    }
+
+
+    @Test
+    public void enemySetImage()
+    {
+        Enemy e = new Enemy( worldX / 2, worldY / 2, 0, 0, 10, Color.RED, world );
+        assertTrue( true );
+    }
+
+
+    @Test
+    public void enemyGetWorld()
+    {
+        Enemy e = new Enemy( worldX / 2, worldY / 2, 0, 0, 10, Color.RED, world );
+        assertEquals( world, e.getWorld() );
+    }
+
+
+    @Test
+    public void enemySetWorld()
+    {
+        Enemy e = new Enemy( worldX / 2, worldY / 2, 0, 0, 10, Color.RED, world );
+        World lel = new World( worldX / 2, worldY, players, enemies, lis );
+        e.setWorld( lel );
+        assertEquals( lel, e.getWorld() );
+    }
+
+
+    @Test
+    public void enemyAI()
+    {
+        Enemy e = new Enemy( worldX / 2, worldY / 2, 0, 0, 10, Color.RED, world );
+        e.ai();
+        assertTrue( true );
+    }
+
+
+    @Test
+    public void enemyMove()
+    {
+        Enemy e = new Enemy( worldX / 2, worldY / 2, 0, 0, 10, Color.RED, world );
+        e.move();
+        assertTrue( true );
+    }
+
+
+    @Test
+    public void enemyAttackAnimation()
+    {
+        Enemy e = new Enemy( worldX / 2, worldY / 2, 0, 0, 10, Color.RED, world );
+        e.attackAnimation( x, y );
+        assertTrue( true );
+    }
+
+
+    @Test
+    public void enemyTakeDamage()
+    {
+        Enemy e = new Enemy( worldX / 2, worldY / 2, 0, 0, 10, Color.RED, world );
+        e.takeDamage( 1 );
+        assertEquals( 9, e.getHP() );
+    }
+
+
+    @Test
+    public void enemyAttack()
+    {
+        Enemy e = new Enemy( worldX / 2, worldY / 2, 0, 0, 10, Color.RED, world );
+        Player p = new Player( worldX / 2, worldY / 2, 0, 0, 10, Color.RED, world );
+        e.enemyAttack( p );
+        assertTrue( true );
+    }
+
+
+    // --Test EntranceTile
+    @Test
+    public void entranceTileConstructor()
+    {
+        EntranceTile eT = new EntranceTile( x, y, world );
+        String str = eT.toString();
+        assertNotNull( str );
+    }
+
+
+    @Test
+    public void entranceTileDestroyTile()
+    {
+        EntranceTile eT = new EntranceTile( x, y, world );
+        eT.destroyTile();
+        assertTrue( true );
+    }
+
+
+    // --Test GoldTile
+    @Test
+    public void goldTileConstructor()
+    {
+        GoldTile g = new GoldTile( x, y, world );
+        String str = g.toString();
+        assertNotNull( str );
+    }
+
+
+    @Test
+    public void goldTileToString()
+    {
+        GoldTile g = new GoldTile( x, y, world );
+        String str = g.toString();
+        assertNotNull( str );
+    }
+
+
+    // --Test Listener
+    @Test
+    public void listenerConstructor()
+    {
+        Listener l = new Listener();
+        String str = l.toString();
+        assertNotNull( str );
+    }
+
+
+    @Test
+    public void listenerToString()
+    {
+        Listener l = new Listener();
+        String str = l.toString();
+        assertNotNull( str );
+    }
+
+
+    // --Test RegularTile
+    @Test
+    public void regularTileConstructor()
+    {
+        RegularTile r = new RegularTile( false, 0, Color.BLACK, x, y, world );
+        String str = r.toString();
+        assertNotNull( str );
+    }
+
+
+    // --Test SilverTile
+    @Test
+    public void silverTileConstructor()
+    {
+        SilverTile s = new SilverTile( x, y, world );
+        String str = s.toString();
+        assertNotNull( str );
+    }
+
+
+    // --Test Tile
+    @Test
+    public void tileConstructor()
+    {
+        Tile t = new Tile( false, 0, Color.BLACK, x, y, world );
+        String str = t.toString();
+        assertNotNull( str );
+    }
+
+
+    @Test
+    public void tileDestroyTile()
+    {
+        Tile t = new Tile( false, 0, Color.BLACK, x, y, world );
+        t.destroyTile();
+        assertTrue( true );
+    }
+
+
+    @Test
+    public void tileGetTile()
+    {
+        Tile t = new Tile( false, 0, Color.BLACK, x, y, world );
+        assertEquals( t, t.getTile() );
+    }
+
+
+    @Test
+    public void tileIsPassable()
+    {
+        Tile t = new Tile( false, 0, Color.BLACK, x, y, world );
+        assertFalse( t.isPassable() );
+    }
+
+
+    @Test
+    public void tileGetColor()
+    {
+        Tile t = new Tile( false, 0, Color.BLACK, x, y, world );
+        assertEquals( Color.BLACK, t.getColor() );
+    }
+
+
+    @Test
+    public void tileSetImage()
+    {
+        Tile t = new Tile( false, 0, Color.BLACK, x, y, world );
+        assertTrue( true );
+    }
+
+
+    @Test
+    public void tileDrawSelf()
+    {
+        Tile t = new Tile( false, 0, Color.BLACK, x, y, world );
+        assertTrue( true );
+    }
+
+
+    // --Test TrapTile
+    @Test
+    public void trapTileConstructor()
+    {
+        TrapTile tt = new TrapTile( true, 0, Color.BLACK, x, y, world );
+        String str = tt.toString();
+        assertNotNull( str );
+    }
+
+
+    // --Test World
+    @Test
+    public void worldConstructor()
+    {
+        World w = new World( worldX, worldY, players, enemies, lis );
+    }
+    // Remove block comment below to run JUnit test in console
+    /*
+     * public static junit.framework.Test suite() { return new
+     * JUnit4TestAdapter( JUSafeTradeTest.class ); }
+     * 
+     * public static void main( String args[] ) {
+     * org.junit.runner.JUnitCore.main( "JUSafeTradeTest" ); }
+     */
+}

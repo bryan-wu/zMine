@@ -1,0 +1,32 @@
+package testMine;
+
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
+import javax.swing.Timer;
+
+
+public class GoldTile extends Tile
+{
+
+    private boolean gold;
+
+
+    /**
+     * @param c
+     *            color of tile
+     */
+    public GoldTile(int x, int y)
+    {
+        super( false, 1000, Color.YELLOW, x, y, world );
+        gold = true;       
+    }
+
+
+    public void giveGold( Player p )
+    {
+        p.addGold( 1000 );
+    }
+}

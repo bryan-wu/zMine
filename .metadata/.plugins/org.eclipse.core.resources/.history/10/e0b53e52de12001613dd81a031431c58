@@ -1,0 +1,78 @@
+package mine;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+
+import javax.swing.JPanel;
+
+
+public class Displayer extends JPanel
+{
+    World world;
+
+    int width;
+
+    int height;
+
+    Graphics g;
+
+    // Bullet bullet;//ill do this later
+    Enemy enemy;
+
+    Player player;
+
+    Dimension x;
+
+
+    public Displayer()
+    {
+
+    }
+
+
+    public void addWorld( World w )
+    {
+        world = w;
+        width = w.xDim * 10;
+        height = w.yDim * 10;
+        x = new Dimension( width, height );
+        // world.setDisplayer(this);
+        this.setSize( x );
+    }
+
+
+    @Override
+    public void paintComponent( Graphics g )
+    {
+        super.paintComponent( g );
+        this.g = g;
+        g.setColor( Color.WHITE );
+        g.fillRect( 0, 0, width, height );
+        for ( int r = 0; r < world.theWorld.length; r++ )
+        {
+            for ( int c = 0; c < world.theWorld[0].length; c++ )
+            {
+                drawTile( world.theWorld[r][c], r, c );
+            }
+        }
+        for (int x = 0; x < world.thePlayers.size(); x++)
+        {
+            drawPlayer(world.thePlayers.get(x));
+        }
+    }
+
+
+    private void drawPlayer( Player player2 )
+    {
+        g.setColor( player2.getColor() );
+        g.fillRect( (int)(player2.getX() * 10), (int)(player2.getY() * 10), 10 ,10 );
+    }
+
+
+    public void drawTile( Tile dTile, int x, int y )
+    {
+        g.setColor( dTile.getColor() );
+        g.fillRect( x * 10, y * 10, 10,10 );
+    }
+}

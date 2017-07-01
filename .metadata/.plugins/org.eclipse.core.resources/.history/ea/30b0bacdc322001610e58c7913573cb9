@@ -1,0 +1,38 @@
+package testMine;
+
+import java.awt.Color;
+
+
+/**
+ * Entrance tile
+ *
+ * @author Bryan Wu
+ * @version May 24, 2016
+ * @author Period: 3
+ * @author Assignment: The Final
+ *
+ * @author Sources:
+ */
+public class EntranceTile extends Tile
+{
+
+    public EntranceTile( int x, int y, World world )
+    {
+        // TODO Auto-generated constructor stub
+        super( true, 0, Color.BLUE, x, y, world );
+    }
+
+
+    @Override
+    public void destroyTile()
+    {
+        // cant destroy me hahaha!
+    }
+
+
+    public void exit()
+    {
+        // interact key!
+    }
+
+}

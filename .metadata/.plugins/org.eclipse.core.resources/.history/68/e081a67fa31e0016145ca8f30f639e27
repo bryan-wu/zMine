@@ -1,0 +1,97 @@
+
+import java.awt.Color;
+import java.awt.event.KeyEvent;
+
+
+public class Player extends Character
+{
+    private Listener l;
+
+    private int gold;
+
+    //TODO: UPDATE THIS CLASS
+
+    // X/Y param
+    // speed
+    // x/y vel
+    // health param
+    // takeHit()
+    // checkHealth()
+
+    /**
+     * @param x
+     *            x position
+     * @param y
+     *            y position
+     * @param vX
+     *            x velocity
+     * @param vY
+     *            y velocity
+     * @param hitPoints
+     *            hitPoints
+     * @param color
+     *            color
+     * @param world
+     *            world
+     */
+    public Player( int x, int y, double vX, double vY, int hitPoints, Color color, World world )
+    {
+        super( x, y, vX, vY, hitPoints, color, world );
+        gold = 0;
+    }
+
+
+    /**
+     * TODO Write your method description here.
+     * 
+     * @return
+     */
+    public boolean alive()
+    {
+        return hp > 0;
+    }
+
+
+    /**
+     * TODO Write your method description here.
+     * 
+     * @param damage
+     *            damage taken
+     * @return
+     */
+    public void takeHit( int damage )
+    {
+
+        setHP( getHP() - damage );
+
+        if ( !alive() )
+        {
+            // tell World that Player is dead
+            w.playerDeath( this );
+        }
+    }
+
+
+    @Override
+    public void takeDamage( int damage )
+    {
+        hp = hp - damage;
+        if ( !alive() )
+        {
+            w.playerDeath( this );
+        }
+    }
+
+
+    public int getGold()
+    {
+        return gold;
+    }
+
+
+    public void addGold( int g )
+    {
+        gold += g;
+    }
+
+}

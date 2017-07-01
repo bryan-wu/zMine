@@ -1,0 +1,60 @@
+
+import java.awt.Color;
+
+
+public class Tile
+{
+    boolean pass;// tells if the player is able to walk through
+
+    boolean destroyed = false;// if the tile is already destroyed
+
+    int loot;// does it drop loot?
+
+    Color color;// color of the tile.
+
+
+    public Tile( boolean passable, int loot, Color color )
+    {
+        pass = passable;
+        this.loot = loot;
+        this.color = color;
+    }
+
+
+    public void destroyTile()
+    {
+
+    }
+
+
+    public void setPassable( boolean b )
+    {
+        pass = b;
+    }
+
+
+    public void setDestroyed( boolean b )
+    {
+        destroyed = b;
+    }
+
+
+    public boolean isPassable()
+    {
+        return pass;
+    }
+
+
+    public Tile getTile()
+    {
+
+        return this;
+    }
+
+
+    public Color getColor()
+    {
+        return color;
+    }
+
+}

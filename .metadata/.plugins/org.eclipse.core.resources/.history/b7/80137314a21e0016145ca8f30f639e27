@@ -1,0 +1,164 @@
+package mine;
+
+import java.awt.Color;
+
+
+public class Bullet
+{
+
+    private int r;// row # position of bullet
+
+    private int c;// column # position of bullet
+
+    private World w;
+
+    private Color color;
+
+    private final int SPEED = 1; // TODO: adjust value
+
+    private Character character;
+
+
+    /**
+     * @param x
+     *            x position
+     * @param y
+     *            y position
+     * @param velX
+     *            velocity x
+     * @param velY
+     *            velocity y
+     * @param hitPoints
+     *            hitPoints
+     * @param world
+     *            World
+     */
+    public Bullet( Character ch, Color c, World world )
+    {
+        character = ch;
+        w = world;
+        color = c;
+    }
+
+
+    // public void tick( long tick )
+    // {
+    // x = 10;
+    // y = 10;
+    // }
+
+    /**
+     * Update characters's position.
+     * 
+     * @param dr
+     *            change in y or row number
+     * @param dc
+     *            change in x or column number
+     */
+    public void fire()
+    {
+        c = character.getC(); // TODO: convert to row and column
+        r = character.getR();
+
+        String direction = character.getDirection();
+        int[] xy = move( direction );
+
+        // int nextCol = xy[0];
+        // int nextRow = xy[1];
+        while ( w.theWorld[xy[0]][xy[1]].getTile().isPassable() ) // TODO: enemy
+                                                                  // detection
+        {
+            if ( xy[2] == 0 )
+            {
+                c = xy[0];
+            }
+            else
+            {
+                r = xy[1];
+            }
+            if ( w.enemyOnTile( xy[0], xy[1] ) >= 0 )
+            {
+                w.getEnemies().get( w.enemyOnTile( xy[0], xy[1] ) ).takeDamage( 10 );
+                break;
+            }
+            xy = move( direction );
+        }
+        // TODO: remove bullet from world
+
+    }
+
+
+    public int[] move( String dir )
+    {
+        // TODO : convert to row and col
+        int[] xy = new int[3]; // x and y coordinates xy[0] = x, xy[1] = y and
+                               // xy[2] is the index of the coordinate to be
+                               // updated
+        if ( character.getDirection().equals( "east" ) )
+        {
+            xy[0] = c + SPEED;
+            xy[1] = r;
+            xy[2] = 0;
+        }
+        if ( character.getDirection().equals( "west" ) )
+        {
+            xy[0] = c - SPEED;
+            xy[1] = r;
+            xy[2] = 0;
+        }
+        if ( character.getDirection().equals( "north" ) )
+        {
+            xy[0] = c;
+            xy[1] = r - SPEED;
+            xy[2] = 1;
+        }
+        if ( character.getDirection().equals( "south" ) )
+        {
+            xy[0] = c;
+            xy[1] = r + SPEED;
+            xy[2] = 1;
+        }
+
+        return xy;
+    }
+
+
+    // getters
+
+    public double getX()
+    {
+        return c;
+    }
+
+
+    /**
+     * 
+     * Moves to x
+     */
+    public void setX( int toX )
+    {
+        c = toX;
+    }
+
+
+    public double getY()
+    {
+        return r;
+    }
+
+
+    /**
+     * 
+     * Move to y
+     */
+    public void setY( int toY )
+    {
+        r = toY;
+    }
+
+
+    public Color getColor()
+    {
+        return color;
+    }
+}

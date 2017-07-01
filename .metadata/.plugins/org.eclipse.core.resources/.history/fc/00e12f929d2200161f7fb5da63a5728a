@@ -1,0 +1,345 @@
+package testMine;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Image;
+
+
+/**
+ * Character class that holds parameters such as position (in rows and columns),
+ * velocities, health points and color.
+ *
+ * @author Bryan Wu
+ * @version May 22, 2016
+ * @author Period: 3
+ * @author Assignment: zMine
+ *
+ * @author Sources: None
+ */
+public abstract class Character
+{
+    private int x;
+
+    private int y;
+
+    private int vX; // velocity along horizontal axis
+
+    private int vY;// velocity along vertical axis
+
+    private int hp; // health points
+
+    private World w;
+
+    boolean alive;
+
+    private Color color;
+
+    private Image img; // image of the char
+
+    private int count = 0;// used for mining
+
+
+    /**
+     * @param x
+     *            x position
+     * @param y
+     *            y position
+     * @param velX
+     *            velocity x
+     * @param velY
+     *            velocity y
+     * @param hitPoints
+     *            hitPoints
+     * @param world
+     *            World
+     */
+    public Character( int x, int y, int velX, int velY, int hitPoints, Color color, World world )
+    {
+        this.setX( x );
+        this.setY( y );
+        setVX( velX );
+        setVY( velY );
+        hp = hitPoints;
+        setWorld( world );
+        this.color = color;
+        alive = true;
+    }
+
+
+    /**
+     * Returns if hp is above 0
+     * 
+     * @return hp
+     */
+    public boolean isAlive()
+    {
+        return hp > 0;
+    }
+
+
+    /**
+     * Set character to alive
+     * 
+     * @param newStatus
+     *            alive status
+     */
+    public void setAlive( boolean newStatus )
+    {
+        alive = newStatus;
+    }
+
+
+    /**
+     * Takes damage
+     * 
+     * @param damage
+     *            damage
+     */
+    abstract void takeDamage( int damage );
+
+
+    /**
+     * Update characters's position.
+     * 
+     * @param dr
+     *            change in y or row number
+     * @param dc
+     *            change in x or column number
+     */
+    public boolean updatePos( int changeX, int changeY )
+    {
+        boolean moved = false;
+        setVX( changeX );
+        setVY( changeY );
+        if ( alive )
+        {
+
+            if ( -1 < y + changeY && y + changeY < getWorld().yDim
+                && getWorld().theWorld[y + changeY][x].getTile().pass )
+            {
+                y = y + changeY;
+                setCount( 0 );
+                moved = true;
+            }
+
+            if ( -1 < x + changeX && x + changeX < getWorld().xDim
+                && getWorld().theWorld[y][x + changeX].getTile().pass )
+            {
+                x = x + changeX;
+                setCount( 0 );
+                moved = true;
+            }
+        }
+        setCount( 0 );
+        return moved;
+    }
+
+
+    // getters
+    /**
+     * Return the value of hp for this player.
+     * 
+     * @return
+     */
+    public int getHP()
+    {
+        return hp;
+    }
+
+
+    /**
+     * Sets hp to new hp value
+     * 
+     * @param newHP
+     *            new hp valye
+     */
+    public void setHP( int newHP )
+    {
+        hp = newHP;
+    }
+
+
+    /**
+     * Returns the value of velocity along the horizontal axis.
+     * 
+     * @return c velocity
+     */
+    public int getVX()
+    {
+        return vX;
+    }
+
+
+    /**
+     * Sets the value of velocity along the horizontal axis.
+     * 
+     * @param newVC
+     *            new c velocity
+     */
+    public void setVX( int newVX )
+    {
+        vX = newVX;
+    }
+
+
+    /**
+     * Returns the value of velocity along the vertical axis.
+     * 
+     * @return r velocity
+     */
+    public int getVY()
+    {
+        return vY;
+    }
+
+
+    /**
+     * Sets the value of velocity along the vertical axis.
+     * 
+     * @param new
+     *            r velocity
+     */
+    public void setVY( int newVY )
+    {
+        // originally setVR(newVR);
+        vY = newVY;
+    }
+
+
+    /**
+     * Returns column number.
+     * 
+     * @return column #
+     */
+    public int getX()
+    {
+        return x;
+    }
+
+
+    /**
+     * Sets column number.
+     * 
+     * @param c
+     *            column #
+     */
+    public void setX( int x )
+    {
+        this.x = x;
+    }
+
+
+    /**
+     * Returns rows number.
+     * 
+     * @return row #
+     */
+    public int getY()
+    {
+        return y;
+    }
+
+
+    /**
+     * Sets row number.
+     * 
+     * @param r
+     *            row #
+     */
+    public void setY( int y )
+    {
+        this.y = y;
+    }
+
+
+    /**
+     * Returns color of character.
+     * 
+     * @return color
+     */
+    public Color getColor()
+    {
+        return color;
+    }
+
+
+    /**
+     * Sets color of character.
+     * 
+     * @param c
+     */
+    public void setColor( Color c )
+    {
+        color = c;
+    }
+
+
+    /**
+     * Sets image of character.
+     * 
+     * @param i
+     *            image
+     */
+    public void setImage( Image i )
+    {
+        img = i;
+    }
+
+
+    /**
+     * Draws character.
+     * 
+     * @param g
+     *            graphics
+     */
+    public void drawMe( Graphics g )
+    {
+        if ( img == null )
+        {
+            g.setColor( color );
+            g.fillRect( x * 20, y * 20, 20, 20 );
+        }
+        else
+        {
+            g.drawImage( img, x * 20, y * 20, null );
+        }
+    }
+
+
+    /**
+     * Returns world.
+     * 
+     * @return world
+     */
+    public World getWorld()
+    {
+        return w;
+    }
+
+
+  
+
+
+    /**
+     * Returns value of count.
+     * 
+     * @return count
+     */
+    public int getCount()
+    {
+        return count;
+    }
+
+
+    /**
+     * Sets count to new value.
+     * 
+     * @param count
+     *            count
+     */
+    public void setCount( int count )
+    {
+        this.count = count;
+    }
+
+}

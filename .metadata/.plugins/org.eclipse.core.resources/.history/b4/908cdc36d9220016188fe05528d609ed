@@ -1,0 +1,87 @@
+package testMine;
+
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
+
+/**
+ * Listener Class
+ *
+ * @author Austin Cheng
+ * @version May 24, 2016
+ * @author Period: 3
+ * @author Assignment: The Final
+ *
+ * @author Sources:
+ */
+public class Listener implements KeyListener
+{
+    World world;
+
+
+    /**
+     * Listener Constructor.
+     */
+    public Listener()
+    {
+
+    }
+
+
+    /**
+     * Adds world to listener.
+     * 
+     * @param a
+     *            world
+     */
+    public void addWorld( World a )
+    {
+        world = a;
+    }
+
+
+    @Override
+    /**
+     * creates
+     */
+    public void keyPressed( KeyEvent e )
+    {
+        switch ( e.getKeyCode() )
+        {
+            case KeyEvent.VK_LEFT:
+                world.thePlayers.get( 0 ).updatePos( -1, 0 );
+                break;
+            case KeyEvent.VK_RIGHT:
+                world.thePlayers.get( 0 ).updatePos( 1, 0 );
+                break;
+            case KeyEvent.VK_UP:
+                world.thePlayers.get( 0 ).updatePos( 0, -1 );
+                break;
+            case KeyEvent.VK_DOWN:
+                world.thePlayers.get( 0 ).updatePos( 0, 1 );
+                break;
+            case KeyEvent.VK_SPACE:
+                world.thePlayers.get( 0 ).bomb();
+                break;
+            case KeyEvent.VK_F:
+                world.thePlayers.get( 0 ).mine();
+                break;
+        }
+    }
+
+
+    @Override
+    public void keyReleased( KeyEvent e )
+    {
+
+    }
+
+
+    @Override
+    public void keyTyped( KeyEvent e )
+    {
+        // TODO Auto-generated method stub
+
+    }
+
+}

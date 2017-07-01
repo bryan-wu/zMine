@@ -1,0 +1,274 @@
+package testMine;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Random;
+
+import javax.swing.Timer;
+
+
+/**
+ * Enemy class
+ *
+ * @author Connor Jeng
+ * @version May 24, 2016
+ * @author Period: 3
+ * @author Assignment: The Final
+ *
+ * @author Sources:
+ */
+public class Enemy extends Character
+{
+    //TODO: FIX GHOST ENEEMY
+    private int vX; // x velocity
+
+    private int vY;// y velocity
+
+    protected int hp; // health points
+
+    private boolean alive;
+
+    private Color color;
+
+    int speed = 200;
+
+    Timer move;
+
+    Timer attackTimer;
+
+
+    /**
+     * @param x
+     *            x position
+     * @param y
+     *            y position
+     * @param vX
+     *            x velocity
+     * @param vY
+     *            y velocity
+     * @param hitPoints
+     *            hitPoints
+     * @param world
+     *            World
+     */
+    public Enemy( int x, int y, int velX, int velY, int hitPoints, Color c, World world )
+    {
+        super( x, y, velX, velY, hitPoints, c, world );
+        vX = velX;
+        vY = velY;
+        ai();
+
+    }
+
+
+    /**
+     * Delay of movement for enemy
+     */
+    public void ai()
+    {
+        int delay = 1000;
+        move = new Timer( delay, new ActionListener()
+        {
+
+            @Override
+            public void actionPerformed( ActionEvent e )
+            {
+                move();
+            }
+
+        } );
+        move.start();
+    }
+
+
+    /**
+     * Randomly generated movements for enemy
+     */
+    public void move()
+    {
+        Random rand = new Random();
+        Player uhoh;
+        while ( !updatePos( ( rand.nextInt( 3 ) - 1 ), ( rand.nextInt( 3 ) - 1 ) ) )
+        {
+
+        }
+        if ( ( uhoh = getWorld().detectPlayer( getX(), getY() ) ) != null )
+        {
+            attackAnimation( getX(), getY() );
+            enemyAttack( uhoh );
+        }
+        if ( ( uhoh = getWorld().detectPlayer( getX() + 1, getY() ) ) != null )
+        {
+            attackAnimation( getX() + 1, getY() );
+            enemyAttack( uhoh );
+        }
+        if ( ( uhoh = getWorld().detectPlayer( getX(), getY() + 1 ) ) != null )
+        {
+            attackAnimation( getX(), getY() + 1 );
+            enemyAttack( uhoh );
+        }
+        if ( ( uhoh = getWorld().detectPlayer( getX() - 1, getY() ) ) != null )
+        {
+            attackAnimation( getX() - 1, getY() );
+            enemyAttack( uhoh );
+        }
+        if ( ( uhoh = getWorld().detectPlayer( getX(), getY() - 1 ) ) != null )
+        {
+            attackAnimation( getX(), getY() - 1 );
+            enemyAttack( uhoh );
+        }
+    }
+
+
+    /**
+     * Attack animation for enemy
+     * 
+     * @param x
+     *            row
+     * @param y
+     *            column
+     */
+    public void attackAnimation( int x, int y )
+    {
+        getWorld().changePicToAttk( x, y );
+        attackTimer = new Timer( 500, new ActionListener()
+        {
+
+            @Override
+            public void actionPerformed( ActionEvent e )
+            {
+                getWorld().changePicToNull( x, y );
+                attackTimer.stop();
+            }
+
+        } );
+        attackTimer.start();
+    }
+
+
+    /**
+     * Takes damage
+     * 
+     * @param damage
+     *            damage
+     * @return
+     */
+
+    public void takeDamage( int damage )
+    {
+        setHp( getHP() - damage );
+        if ( !isAlive() )
+        {
+            getWorld().enemyDeath( this );
+            move.stop();
+            attackTimer.stop();
+        }
+    }
+
+
+    /**
+     * Checks if alive
+     * 
+     * @return hp
+     */
+    public boolean isAlive()
+    {
+        return hp > 0;
+    }
+
+
+    /**
+     * Enemy attacks player
+     * 
+     * @param c
+     *            character
+     */
+    public void enemyAttack( Player c )
+    {
+        c.takeDamage(1);
+    }
+
+
+    /**
+     * 
+     * get x movement
+     * 
+     * @return
+     */
+    public int getvX()
+    {
+        return vX;
+    }
+
+
+    /**
+     * set x movement
+     * 
+     * @param vX
+     *            vX
+     */
+    public void setvX( int vX )
+    {
+        this.vX = vX;
+    }
+
+
+    /**
+     * get y movement
+     * 
+     * @return
+     */
+    public int getvY()
+    {
+        return vY;
+    }
+
+
+    /**
+     * set y movement
+     * 
+     * @param vY
+     *            vy
+     */
+    public void setvY( int vY )
+    {
+        this.vY = vY;
+    }
+
+
+    /**
+     * gets current health point
+     * 
+     * @return hp
+     */
+    public int getHp()
+    {
+        return hp;
+    }
+
+
+    /**
+     * sets current health point
+     * 
+     * @param hp
+     *            hp
+     */
+    public void setHp( int hp )
+    {
+        this.hp = hp;
+    }
+
+
+    /**
+     * get color
+     * 
+     * @return color
+     */
+    public Color getColor()
+    {
+        return color;
+    }
+
+}

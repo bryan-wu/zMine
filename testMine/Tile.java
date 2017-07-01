@@ -1,0 +1,144 @@
+package testMine;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.image.ImageObserver;
+
+
+/**
+ * Tile class.
+ *
+ * @author Austin Cheng, Bryan Wu, Connor Jeng
+ * @version May 22, 2016
+ * @author Period: 3
+ * @author Assignment: The Final
+ *
+ * @author Sources: None
+ */
+public class Tile
+{
+    boolean pass;// tells if the player is able to walk through
+
+    boolean destroyed = false;// if the tile is already destroyed
+
+    int loot;// does it drop loot?
+
+    private int c;
+
+    private int r;
+
+    private Image image;
+
+    private Color color;// color of the tile.
+
+    private World world;
+
+
+    /**
+     * @param passable
+     *            passable
+     * @param loot
+     *            loot
+     * @param color
+     *            colors
+     * @param c
+     *            col
+     * @param r
+     *            row
+     * @param world
+     *            world
+     */
+    public Tile( boolean passable, int loot, Color color, int c, int r, World world )
+    {
+        pass = passable;
+        this.loot = loot;
+        this.color = color;
+        this.c = c;
+        this.r = r;
+        this.world = world;
+    }
+
+
+    /**
+     * Destroys tile.
+     */
+    public void destroyTile()
+    {
+        if ( destroyed == false )
+        {
+            pass = true;
+            color = World.brown;
+            world.thePlayers.get( 0 ).addGold( loot );
+            loot = 0;
+            image = null;
+            destroyed = true;
+        }
+    }
+
+
+    /**
+     * Returns this tile.s
+     * 
+     * @return tile
+     */
+    public Tile getTile()
+    {
+
+        return this;
+    }
+
+
+    /**
+     * Returns true if tile is passable--false otherwise.
+     * 
+     * @return if passables
+     */
+    public boolean isPassable()
+    {
+        return pass;
+    }
+
+
+    /**
+     * Returns color of tile.
+     * 
+     * @return color
+     */
+    public Color getColor()
+    {
+        return color;
+    }
+
+
+    /**
+     * Draws tile.
+     * 
+     * @param g
+     *            graphics
+     */
+    public void drawSelf( Graphics g )
+    {
+        if ( image == null )
+        {
+            g.setColor( color );
+            g.fillRect( c * 20, r * 20, 20, 20 );
+        }
+        else
+        {
+            g.drawImage( image, c * 20, r * 20, null );
+        }
+    }
+
+
+    /**
+     * Sets image of tile.
+     * 
+     * @param i
+     *            image
+     */
+    public void setImage( Image i )
+    {
+        image = i;
+    }
+}

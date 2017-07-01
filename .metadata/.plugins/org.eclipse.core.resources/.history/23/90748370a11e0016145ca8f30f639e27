@@ -1,0 +1,213 @@
+
+import java.awt.Color;
+
+
+public abstract class Character
+{
+    // X/Y param
+    // speed
+    // x/y vel
+    // health param
+
+    // takeHit()
+    // checkHealth()
+
+    private int x;// Note: x is column #
+
+    private int y;// y is row #
+
+    private double vX; // x velocity
+
+    private double vY;// y velocity
+
+    protected int hp; // health points
+
+    public World w;
+
+    private boolean alive;
+
+    private Color color;
+
+    int speed = 200;
+
+    private String direction;
+
+
+    /**
+     * @param x
+     *            x position
+     * @param y
+     *            y position
+     * @param velX
+     *            velocity x
+     * @param velY
+     *            velocity y
+     * @param hitPoints
+     *            hitPoints
+     * @param world
+     *            World
+     */
+    public Character( int x, int y, double velX, double velY, int hitPoints, Color c, World world )
+    {
+        this.x = x;
+        this.y = y;
+        vX = velX;
+        vY = velY;
+        hp = hitPoints;
+        w = world;
+        color = c;
+        direction = "north";
+    }
+
+
+    /**
+     * TODO Write your method description here.
+     * 
+     * @return
+     */
+    public boolean isAlive()
+    {
+        return hp > 0;
+    }
+
+
+    public void setAlive( boolean newStatus )
+    {
+        alive = newStatus;
+    }
+
+
+    abstract void takeDamage( int damage );
+
+
+    // public void tick( long tick )
+    // {
+    // x = 10;
+    // y = 10;
+    // }
+
+    /**
+     * Update characters's position.
+     * 
+     * @param dr
+     *            change in y or row number
+     * @param dc
+     *            change in x or column number
+     */
+    public void updatePos( int dr, int dc )
+    {
+        if ( y + dr >= 0 )
+            y += dr;
+        if ( x + dc >= 0 )
+            x += dc;
+    }
+
+
+    // getters
+    /**
+     * Return the value of hp for this player.
+     * 
+     * @return
+     */
+    public int getHP()
+    {
+        return hp;
+    }
+
+
+    public void setHP( int newHP )
+    {
+        hp = newHP;
+    }
+
+
+    /**
+     * Returns the value of velocity along the x axis.
+     * 
+     * @return velocity x
+     */
+    public double getVX()
+    {
+        return vX;
+    }
+
+
+    public void setVX( double newVX )
+    {
+        vX = newVX;
+    }
+
+
+    /**
+     * Returns the value of velocity along the y axis.
+     * 
+     * @return velocity y
+     */
+    public double getVY()
+    {
+        return vY;
+    }
+
+
+    public void setVY( double newVY )
+    {
+        vY = newVY;
+    }
+
+
+    public int getX()
+    {
+        return x;
+    }
+
+
+    /**
+     * 
+     * Moves to x
+     */
+    public void setX( int toX )
+    {
+        x = toX;
+    }
+
+
+    public int getY()
+    {
+        return y;
+    }
+
+
+    /**
+     * 
+     * Move to y
+     */
+    public void setY( int toY )
+    {
+        y = toY;
+    }
+
+
+    public Color getColor()
+    {
+        return color;
+    }
+
+
+    public String getDirection()
+    {
+        return direction;
+    }
+
+
+    /**
+     * Set the direction the player is facing to "north", "south", "east" or
+     * "west"
+     * 
+     * @param dir
+     *            direction
+     */
+    public void setDirection( String dir )
+    {
+        direction = dir;
+    }
+}

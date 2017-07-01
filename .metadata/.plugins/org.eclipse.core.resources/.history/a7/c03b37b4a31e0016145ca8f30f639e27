@@ -1,0 +1,227 @@
+
+import java.awt.Color;
+
+
+public abstract class Character
+{
+    // X/Y param
+    // speed
+    // x/y vel
+    // health param
+
+    // takeHit()
+    // checkHealth()
+
+    private int c;// Note: x is column #
+
+    private int r;// y is row #
+
+    private double vC; // x velocity
+
+    private double vR;// y velocity
+
+    protected int hp; // health points
+
+    public World w;
+
+    private boolean alive;
+
+    private Color color;
+
+    int speed = 200;
+
+    private String direction;
+
+
+    /**
+     * @param x
+     *            x position
+     * @param y
+     *            y position
+     * @param velX
+     *            velocity x
+     * @param velY
+     *            velocity y
+     * @param hitPoints
+     *            hitPoints
+     * @param world
+     *            World
+     */
+    public Character( int c, int r, double velC, double velR, int hitPoints, Color color, World world )
+    {
+        this.c = c;
+        this.r = r;
+        vC = velC;
+        vR = velR;
+        hp = hitPoints;
+        w = world;
+        this.color = color;
+        direction = "north";
+    }
+
+
+    /**
+     * TODO Write your method description here.
+     * 
+     * @return
+     */
+    public boolean isAlive()
+    {
+        return hp > 0;
+    }
+
+
+    public void setAlive( boolean newStatus )
+    {
+        alive = newStatus;
+    }
+
+
+    abstract void takeDamage( int damage );
+
+
+    // public void tick( long tick )
+    // {
+    // x = 10;
+    // y = 10;
+    // }
+
+    /**
+     * Update characters's position.
+     * 
+     * @param dr
+     *            change in y or row number
+     * @param dc
+     *            change in x or column number
+     * @param r
+     */
+    public void updatePos( int dr, int dc, int r )
+    {
+        // setVY( dr );
+        // setVX( dc );
+        System.out.println( vX + "" + vY );
+        vX = dc;
+        vY = dr;
+        if ( alive )
+        {
+            if ( -1 < x + dc && x + dc < w.xDim && w.theWorld[x + dc][y].getTile().pass )
+            {
+                x = x + dc;
+            }
+            if ( -1 < y + dr && y + dr < w.yDim && w.theWorld[x][y + dr].getTile().pass )
+            {
+                y = y + dr;
+            }
+        }
+        count = 0;
+    }
+
+
+    // getters
+    /**
+     * Return the value of hp for this player.
+     * 
+     * @return
+     */
+    public int getHP()
+    {
+        return hp;
+    }
+
+
+    public void setHP( int newHP )
+    {
+        hp = newHP;
+    }
+
+
+    /**
+     * Returns the value of velocity along the x axis.
+     * 
+     * @return velocity x
+     */
+    public double getVC()
+    {
+        return vC;
+    }
+
+
+    public void setVC( double newVC )
+    {
+        vC = newVC;
+    }
+
+
+    /**
+     * Returns the value of velocity along the y axis.
+     * 
+     * @return velocity y
+     */
+    public double getVR()
+    {
+        return vR;
+    }
+
+
+    public void setVR( double newVR )
+    {
+        vR = newVR;
+    }
+
+
+    public int getC()
+    {
+        return c;
+    }
+
+
+    /**
+     * 
+     * Moves to x
+     */
+    public void setC( int toC )
+    {
+        c = toC;
+    }
+
+
+    public int getR()
+    {
+        return r;
+    }
+
+
+    /**
+     * 
+     * Move to y
+     */
+    public void setR( int toR )
+    {
+        r = toR;
+    }
+
+
+    public Color getColor()
+    {
+        return color;
+    }
+
+
+    public String getDirection()
+    {
+        return direction;
+    }
+
+
+    /**
+     * Set the direction the player is facing to "north", "south", "east" or
+     * "west"
+     * 
+     * @param dir
+     *            direction
+     */
+    public void setDirection( String dir )
+    {
+        direction = dir;
+    }
+}

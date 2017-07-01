@@ -1,0 +1,129 @@
+
+import java.awt.Color;
+
+
+public class Bullet
+{
+
+    private int x;// Note: x is column #
+
+    private int y;// y is row #
+
+    private World w;
+
+    private Color color;
+
+    private final int SPEED = 1; // TODO: adjust value
+
+    private Character character;
+
+
+    /**
+     * @param x
+     *            x position
+     * @param y
+     *            y position
+     * @param velX
+     *            velocity x
+     * @param velY
+     *            velocity y
+     * @param hitPoints
+     *            hitPoints
+     * @param world
+     *            World
+     */
+    public Bullet( Character ch, Color c, World world )
+    {
+        character = ch;
+        w = world;
+        color = c;
+    }
+
+
+    // public void tick( long tick )
+    // {
+    // x = 10;
+    // y = 10;
+    // }
+
+    /**
+     * Update characters's position.
+     * 
+     * @param dr
+     *            change in y or row number
+     * @param dc
+     *            change in x or column number
+     */
+    public void fire()
+    {
+        x = character.getX();
+        y = character.getY();
+        while ( character.isAlive() ) // TODO: enemy detection
+        {
+            if ( character.getDirection().equals( "east" )
+                && w.theWorld[(int)( x + SPEED )][(int)y].getTile().isPassable() )
+            {
+                if ( w.enemyOnTile( x + SPEED, y ) )
+                {
+
+                }
+                x = x + SPEED;
+            }
+            if ( character.getDirection().equals( "west" )
+                && w.theWorld[(int)( x - SPEED )][(int)( y )].getTile().isPassable() )
+            {
+                x = x - SPEED;
+            }
+            if ( character.getDirection().equals( "north" )
+                && w.theWorld[(int)( x )][(int)y - SPEED].getTile().isPassable() )
+            {
+                y = y - SPEED;
+            }
+            if ( character.getDirection().equals( "south" )
+                && w.theWorld[(int)( x )][(int)( y + SPEED )].getTile().isPassable() )
+            {
+                y = y + SPEED;
+            }
+        }
+    }
+
+
+    // getters
+
+    public double getX()
+    {
+        return x;
+    }
+
+
+    /**
+     * 
+     * Moves to x
+     */
+    public void setX( int toX )
+    {
+        x = toX;
+    }
+
+
+    public double getY()
+    {
+        return y;
+    }
+
+
+    /**
+     * 
+     * Move to y
+     */
+    public void setY( int toY )
+    {
+        y = toY;
+    }
+
+
+    public Color getColor()
+    {
+        return color;
+    }
+}

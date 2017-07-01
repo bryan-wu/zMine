@@ -1,0 +1,36 @@
+package testMine;
+
+import java.awt.Color;
+
+
+/**
+ * TrapTile class.
+ *
+ * @author Bryan Wu
+ * @version May 22, 2016
+ * @author Period: 3
+ * @author Assignment: TODO
+ *
+ * @author Sources: TODO
+ */
+public class TrapTile extends Tile
+{
+    /**
+     * @param passable
+     *            passable
+     * @param loot
+     *            loot
+     * @param color
+     *            colors
+     * @param c
+     *            col
+     * @param r
+     *            row
+     * @param world
+     *            world
+     */
+    public TrapTile( boolean passable, int loot, Color color, int c, int r, World world )
+    {
+        super( passable, loot, color, c, r, world );
+    }
+}

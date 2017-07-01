@@ -1,0 +1,31 @@
+package testMine;
+
+import java.awt.Color;
+
+
+/**
+ * TODO Write a one-sentence summary of your class here. TODO Follow it with
+ * additional details about its purpose, what abstraction it represents, and how
+ * to use it.
+ *
+ * @author Austin Cheng
+ * @version May 25, 2016
+ * @author Period: TODO
+ * @author Assignment: The Final
+ *
+ * @author Sources: TODO
+ */
+public class SilverTile extends Tile
+{
+
+    private boolean gold;
+
+
+    public SilverTile( int x, int y, World world )
+    {
+        // TODO Auto-generated constructor stub
+        super( false, 500, Color.GRAY, x, y, world );
+        gold = true;
+    }
+
+}

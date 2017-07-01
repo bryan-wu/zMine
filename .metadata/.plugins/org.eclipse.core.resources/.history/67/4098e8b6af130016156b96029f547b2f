@@ -1,0 +1,11 @@
+package testMine;
+
+public interface FirePattern
+{
+
+    //public void takeHit( int damage );
+//yo connor, let the projectiles check for the hits, not the players
+
+    public void enemyAttack( Player c );
+
+}
